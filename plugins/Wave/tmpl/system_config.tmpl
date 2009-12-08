@@ -1,0 +1,11 @@
+<mtapp:setting
+	id="endpoint"
+	label="<__trans phrase="Endpoint">"
+>
+<input type="text" readonly="readonly" id="wave_xml_rpc_endpoint" value="<mt:CGIPath />mt-wave.cgi" style="background: white; color: black;" />
+</mtapp:setting>
+<script type="text/javascript">
+jQuery(function($) {
+	$($('#wave_xml_rpc_endpoint').get(0).form).find('.actions-bar').hide();
+});
+</script>

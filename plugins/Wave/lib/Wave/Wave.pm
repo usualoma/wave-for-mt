@@ -63,7 +63,7 @@ sub authors {
 sub entry {
 	my $self = shift;
 	MT->model('entry')->load({
-        'wave_id' => $self->waveId,
+        'wave_id' => $self->wave->id,
         'blip_id' => $self->blipId,
     });
 }
@@ -151,7 +151,6 @@ __PACKAGE__->install_properties({
 	},
 	indexes => {
 		author_id => 1,
-		entry_id => 1,
 		created_on => 1,
 		modified_on => 1,
 #		blog_id => 1,

@@ -13,6 +13,8 @@ author_link: http://tec.toi-planning.net/
 plugin_link: http://tec.toi-planning.net/mt/wave/
 doc_link: http://tec.toi-planning.net/mt/wave/manual
 
+system_config_template: system_config.tmpl
+
 # object types
 schema_version: 0.12
 object_types:

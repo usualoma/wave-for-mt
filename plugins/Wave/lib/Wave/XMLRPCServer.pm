@@ -3,6 +3,7 @@ package Wave::XMLRPCServer;
 use strict;
 use warnings;
 
+use Encode;
 use MT::XMLRPCServer;
 
 package MT::XMLRPCServer;
@@ -17,6 +18,27 @@ my $supportedMethodsOriginal = \&supportedMethods;
 	push(@$list, 'mt.newWave', 'mt.editWave');
 	$list;
 };
+
+sub _wave_decode {
+	my $class = shift;
+	my ($obj) = @_;
+
+	if (! ref $obj) {
+		return Encode::decode('utf8', $obj);
+	}
+	elsif (ref $obj eq 'HASH') {
+		foreach my $k (%$obj) {
+			$obj->{$k} = $class->_wave_decode($obj->{$k});
+		}
+	}
+	elsif (ref $obj eq 'ARRAY') {
+		for (my $i; $i < scalar(@$obj); $i++) {
+			$obj->[$i] = $class->_wave_decode($obj->[$i]);
+		}
+	}
+
+	$obj;
+}
 
 sub newWave {
 	my $class = shift;
@@ -40,11 +62,11 @@ sub newWave {
 		delete $content->{id};
 	}
 	if ($content->{blips}) {
-		$wave->add_blips($content->{blips});
+		$wave->add_blips($class->_wave_decode($content->{blips}));
 		delete $content->{blips};
 	}
 	foreach my $k (keys %$content) {
-		$wave->$k($content->{$k});
+		$wave->$k($class->_wave_decode($content->{$k}));
 	}
 
 	$wave->save
@@ -73,11 +95,11 @@ sub editWave {
 		delete $content->{id};
 	}
 	if ($content->{blips}) {
-		$wave->add_blips($content->{blips});
+		$wave->add_blips($class->_wave_decode($content->{blips}));
 		delete $content->{blips};
 	}
 	foreach my $k (keys %$content) {
-		$wave->$k($content->{$k});
+		$wave->$k($class->_wave_decode($content->{$k}));
 	}
 
 	$wave->save

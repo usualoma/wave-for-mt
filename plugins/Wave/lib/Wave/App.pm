@@ -67,7 +67,7 @@ sub source_edit_author {
 
     my $fieldset = <<__EOH__;
             <fieldset>
-                <h3><__trans phrase="Associate to Wave User" /></h3>
+                <h3>@{[ $plugin->translate("Associate to Wave User") ]}</h3>
     <mtapp:setting
         id="wave_user_id"
         label="<__trans phrase="Wave Users">"
