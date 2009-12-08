@@ -1,0 +1,11 @@
+application: wave-for-mt
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /img
+  static_dir: img
+- url: /_wave/.*
+  script: wave-for-mt.py
+

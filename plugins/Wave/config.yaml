@@ -1,0 +1,62 @@
+# plugin name
+id: wave
+name: Google Wave For Movable Type
+version: 0.1.0
+
+# localization
+l10n_class: Wave::L10N
+
+#about this plugin
+description: <__trans phrase="Enable to edit contents by Google Wave">
+author_name: <__trans phrase="ToI Planning">
+author_link: http://tec.toi-planning.net/
+plugin_link: http://tec.toi-planning.net/mt/wave/
+doc_link: http://tec.toi-planning.net/mt/wave/manual
+
+# object types
+schema_version: 0.12
+object_types:
+    wave: Wave::Wave
+    wave_user: Wave::User
+    entry:
+        wave_id:
+            type: integer
+            not_null: 0
+            default: 0
+            label: Wave ID
+        blip_id:
+            type: string
+            size: 255
+            not_null: 0
+            default: ""
+            label: "Wave's blip ID"
+
+# tag
+tags:
+    help_url: http://tec.toi-planning.net/mt/wave/tags#%t
+    block:
+        IfEntryIsWave?: $Wave::Wave::Template::_hdlr_if_entry_is_wave
+
+        WaveRootWavelet: $Wave::Wave::Template::_hdlr_wave_root_wavelet
+        WaveletRootBlip: $Wave::Wave::Template::_hdlr_wavelet_root_blip
+        WaveAuthors: $Wave::Wave::Template::_hdlr_wave_authors
+        BlipChildBlips: $Wave::Wave::Template::_hdlr_blip_child_blips
+        BlipAuthors: $Wave::Wave::Template::_hdlr_blip_authors
+
+        BlipChildBlipsHeader: $Wave::MT::Template::Context::slurp
+        BlipChildBlipsFooter: $Wave::MT::Template::Context::slurp
+
+    function:
+        BlipContent: $Wave::Wave::Template::_hdlr_blip_content
+        BlipModifiedDate: $Wave::Wave::Template::_hdlr_blip_modified_date
+        BlipChildBlipsRecurse: $Wave::Wave::Template::_hdlr_blip_child_blips_recurse
+
+init_app: $Wave::Wave::XMLRPCServer::init_app
+
+# callback
+callbacks:
+    MT::App::CMS::cms_pre_save.entry: $Wave::Wave::App::cms_pre_save
+    MT::App::CMS::template_param.edit_entry: $Wave::Wave::App::param_edit_entry
+    MT::App::CMS::template_source.edit_author: $Wave::Wave::App::source_edit_author
+    MT::App::CMS::template_param.edit_author: $Wave::Wave::App::param_edit_author
+    MT::Author::post_save: $Wave::Wave::App::post_save_author
