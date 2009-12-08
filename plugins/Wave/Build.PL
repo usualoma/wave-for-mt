@@ -104,9 +104,28 @@ my $class = Module::Build->subclass(
 			}
 
 			if (my @cgis = glob(File::Spec->catfile($new_dist_dir, 'cgi/*'))) {
-				foreach my $f (@statics) {
+				foreach my $f (@cgis) {
 					rename($f, File::Spec->catfile($dist_dir, basename($f)));
 				}
+				rmdir(File::Spec->catfile($new_dist_dir, 'cgi'));
+			}
+
+			if (my @themes = glob(File::Spec->catfile($new_dist_dir, 'theme/*'))) {
+				my $theme = File::Spec->catfile(
+					$dist_dir, 'theme'
+				);
+				mkpath($theme, 1, 0755);
+
+				my $d = File::Spec->catfile(
+					$theme, $self->{properties}{dist_name}
+				);
+				mkpath($d, 1, 0755);
+
+				foreach my $f (@themes) {
+					rename($f, File::Spec->catfile($d, basename($f)));
+				}
+
+				rmdir(File::Spec->catfile($new_dist_dir, 'theme'));
 			}
 		}
 	}
@@ -119,6 +138,8 @@ my $yaml_string = do {
 };
 $yaml_string =~ s/^(\s*)\*/$1App::\*/gm;
 my $yaml = Load($yaml_string);
+
+$yaml->{name} = 'Wave';
 
 my $builder = $class->new(
 	dist_name           => $yaml->{name},
