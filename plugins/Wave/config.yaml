@@ -1,7 +1,7 @@
 # plugin name
 id: wave
 name: Google Wave For Movable Type
-version: 0.1.0-alpha
+version: 0.1.1-alpha
 
 # localization
 l10n_class: Wave::L10N

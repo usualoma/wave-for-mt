@@ -116,10 +116,11 @@ my $class = Module::Build->subclass(
 				);
 				mkpath($theme, 1, 0755);
 
-				my $d = File::Spec->catfile(
-					$theme, $self->{properties}{dist_name}
-				);
-				mkpath($d, 1, 0755);
+#				my $d = File::Spec->catfile(
+#					$theme, $self->{properties}{dist_name}
+#				);
+#				mkpath($d, 1, 0755);
+				my $d = $theme;
 
 				foreach my $f (@themes) {
 					rename($f, File::Spec->catfile($d, basename($f)));
